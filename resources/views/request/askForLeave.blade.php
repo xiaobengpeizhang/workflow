@@ -1,7 +1,6 @@
-
 <span class="layui-breadcrumb">
-  <a href="">首页</a>>
-  <a href="">我的申请</a>>
+  <a href="">首页</a>
+  <a href="">我的申请</a>
   <a><cite>我要请假</cite></a>
 </span>
 
@@ -11,7 +10,8 @@
 
 <div class="layui-row">
     <div class="layui-col-md9">
-        <form class="layui-form" action="">
+        <form class="layui-form" action="{{ route('createLeave') }}" method="post">
+            {{ csrf_field() }}
             <div class="layui-form-item">
                 <label class="layui-form-label">请假类型：</label>
                 <div class="layui-input-inline">
@@ -52,7 +52,7 @@
 
             <div class="layui-form-item">
                 <div class="layui-input-block">
-                    <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                    <button class="layui-btn" lay-submit lay-filter="submit">立即提交</button>
                     <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                 </div>
             </div>
@@ -62,21 +62,28 @@
 
 
 <script>
-    layui.use(['form','laydate'],function(){
+    layui.use(['form','laydate','element'],function(){
         var form = layui.form;
         var laydate = layui.laydate;
+        var element = layui.element;
 
         laydate.render({
             elem:'#start',
             type:'datetime'
         });
 
+        var starttime = $('#start').val();
         laydate.render({
             elem:'#end',
             type:'datetime'
+//            min:starttime
         });
 
         form.render();
-        console.log('form id rendering')
-    })
+        console.log('form is rendering');
+
+        element.init();
+
+    });
+
 </script>

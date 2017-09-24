@@ -21,7 +21,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 //主系统页面
-Route::get('admin','HomeController@admin')->name('admin');
+Route::get('admin/{result?}','HomeController@admin')->name('admin');
 
 Route::group(['prefix' => 'user'],function(){
     //注册用户信息
@@ -40,5 +40,9 @@ Route::group(['prefix'=>'api'],function(){
 Route::group(['prefix'=>'request'],function(){
     //申请请假
     Route::get('askForLeave','RequestController@showLeaveForm')->name('askForLeave');
+    Route::post('createLeveRequest','RequestController@createLeave')->name('createLeave');
 
+    //我的申请
+    Route::get('myRequest','RequestController@showSearchForm')->name('myRequest');
+    Route::post('searchRequest','RequestController@searchRequest')->name('searchRequest');
 });

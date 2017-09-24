@@ -94,22 +94,32 @@
 </div>
 <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
 <script src="{{ asset('layui/layui.js') }}"></script>
+<script src="{{ asset('js/all.js') }}"></script>
 <script>
     //JavaScript代码区域
-    layui.use(['element', 'layer'], function () {
+    layui.use(['element', 'layer',], function () {
         var element = layui.element;
         var layer = layui.layer;
 
-
-        layer.msg('Welcome');
+        var result = '{{ $result }}';
+        switch(result){
+            case 'createLeaveSuccessed':
+               message('新的请假申请已经成功提交！');
+                break;
+            default:
+                layer.msg('Welcome');
+                break;
+        }
 
         element.on('nav(leftbar)', function (elem) {
             console.log(elem.text());
             switch (elem.text()) {
                 case '查询申请记录':
+                    var url = '{{ route('myRequest') }}';
+                    pageLoad(url);
                     break;
                 case '我要请假':
-                    url = '{{ route('askForLeave') }}';
+                    var url = '{{ route('askForLeave') }}';
                     pageLoad(url);
                     break;
                 case '我要加班':
@@ -130,6 +140,14 @@
             if(status == 'success'){
                 $('#content').html(data);
             }
+        });
+    }
+
+    function message(content){
+        layer.msg(content,{
+            icon:1,
+            time:3000,
+            offset: 't'
         });
     }
 
