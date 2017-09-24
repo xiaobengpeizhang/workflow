@@ -1,0 +1,22 @@
+@CHARSET "UTF-8";
+
+/*标题样式*/
+.site-title{
+    margin: 15px 0 15px;
+}
+.site-title fieldset{
+    border: none;
+    padding: 0;
+    border-top: 1px solid #eee;
+}
+.site-title fieldset legend{
+    margin-left: 20px;
+    padding: 0 10px;
+    font-size: 22px;
+    font-weight: 300;
+}
+
+.layui-breadcrumb{
+    visibility: visible;
+    font-size: 12px;
+}
