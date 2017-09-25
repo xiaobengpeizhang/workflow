@@ -15,19 +15,19 @@
                 <div class="layui-colla-item">
                     <h2 class="layui-colla-title">选择查询条件</h2>
                     <div class="layui-colla-content layui-show">
-                        <form class="layui-form" action="{{ route('searchRequest') }}" method="post" lay-filter="search" >
+                        <form class="layui-form" lay-filter="search" >
                             {{ csrf_field() }}
                             <div class="layui-form-item">
                                 <label class="layui-form-label">请假类型：</label>
                                 <div class="layui-input-inline">
-                                    <select name="type" lay-verify="required">
+                                    <select id="type" name="type" lay-verify="required">
                                         <option value="请假">请假</option>
                                     </select>
                                 </div>
 
                                 <label class="layui-form-label">审批状态：</label>
                                 <div class="layui-input-inline">
-                                    <select name="status" lay-verify="required">
+                                    <select id="status" name="status" lay-verify="required">
                                         <option value="等待中">等待中</option>
                                         <option value="已通过">已通过</option>
                                         <option value="被拒绝">被拒绝</option>
@@ -61,26 +61,40 @@
                             </div>
                             <div class="layui-form-item">
                                 <div class="layui-input-block">
-                                    <button class="layui-btn" >立即提交</button>
+                                    <button class="layui-btn" lay-submit lay-filter="search">搜索</button>
                                     <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                                 </div>
                             </div>
                         </form>
-
                     </div>
                 </div>
 
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="site-title">
+    <fieldset><legend><a name="fieldset">申请记录</a></legend></fieldset>
+</div>
+<div class="layui-container">
+    <div class="layui-row">
+        <div class="layui-col-md10">
+            <table id="table"></table>
 
         </div>
     </div>
 </div>
 
+
+
 <script>
-    layui.use(['element','form','laydate'],function(){
+    layui.use(['element','form','laydate','layer','table'],function(){
         var element = layui.element;
         var form = layui.form;
         var laydate = layui.laydate;
+        var layer = layui.layer;
+        var table = layui.table;
 
         laydate.render({
             elem:'#end',
@@ -91,6 +105,8 @@
             type:'date'
         });
         $('#date').hide();
+        $('#table').hide();
+
 
         var now = new Date();
         form.on('radio(7Days)',function(data){
@@ -120,9 +136,50 @@
             $('#date').hide();
         });
 
+        form.on('submit(search)',function(data){
+            var start = data.field.start;
+            var end = data.field.end;
+            if(isDateValid(start,end) == false){
+                layer.msg('你输入的时间范围无效！',{icon:5});
+            }
+            getSearchResult(data.field,table);
+            $('#table').show();
+            return false;
+        });
         form.render();
         element.init();
     });
 
+    function getSearchResult(form,table){
+
+        table.render({
+            url:'{{ route('searchRequest') }}',
+            where:form,
+            elem:'#table',
+            height:315,
+            cols:[[
+                {checkbox:true},
+                {field:'requestNo',title:'申请编号',width:150},
+                {field:'type',title:'申请类型',width:100},
+                {field:'created_at',title:'申请提交时间',width:200},
+
+            ]]
+        })
+
+        {{--var url = '{{ route('searchRequest') }}';--}}
+        {{--$.get(url,form,function(data,status){--}}
+            {{--if(status == 'success'){--}}
+                {{--console.log(data);--}}
+                {{--table.render({--}}
+                    {{--elem:'#table',--}}
+                    {{--height:315,--}}
+                    {{--cols:[[--}}
+                        {{--{checkbox:true},--}}
+                        {{--{field:'requestNo',title:'申请编号',width:80}--}}
+                    {{--]]--}}
+                {{--})--}}
+            {{--}--}}
+        {{--})--}}
+    }
 
 </script>

@@ -55,6 +55,11 @@ class RequestController extends Controller
     public function showSearchForm(){
         return view('request.searchMyRequest');
     }
+
+    /**
+     * @param Request $form
+     * @return array|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function searchRequest(Request $form){
         $this->validate($form,[
            'type'=>'required',
@@ -64,9 +69,16 @@ class RequestController extends Controller
         ]);
         //获取当前登录用户所有的申请信息
         $uesrInfo = UserInfo::where('user_id','=',Auth::id())->first();
-        $leaves = DB::table('leaves')->where('user_code','=',$uesrInfo->user_code)->get();
+        $leaves = DB::table('leaves')->where('user_code','=',$uesrInfo->user_code)->get()->toArray();
 
         //TODO:根据条件进行筛选，需要关联其他的表格模型
-        return view('request.getRequests',$leaves);
+//        return view('request.getRequests',$leaves);
+        $response = array(
+            'code'=> 0,
+            'msg'=>'success',
+            'count'=>count($leaves),
+            'data'=>$leaves
+        );
+        return $response;
     }
 }

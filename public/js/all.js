@@ -36,3 +36,14 @@ Date.prototype.format = function (format) {
                 ("00" + o[k]).substr(("" + o[k]).length));
     return format;
 }
+
+//传入“yyyy-MM-dd”格式的字符串，判断日期大小
+function isDateValid(start,end){
+    var startdate = new Date(start.replace(/-/g,"/"));
+    var enddate = new Date(end.replace(/-/g,"/"));
+    if(startdate < enddate){
+        return true;
+    }else{
+        return false;
+    }
+}

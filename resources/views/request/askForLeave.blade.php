@@ -84,6 +84,15 @@
 
         element.init();
 
+        form.on('submit(submit)',function(data){
+            var start = data.field.start;
+            var end = data.field.end;
+            if(isDateValid(start,end) == false){
+                layer.msg('你输入的时间范围无效！',{icon:5});
+                return false;
+            }
+
+        });
     });
 
 </script>

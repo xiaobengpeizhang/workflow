@@ -44,5 +44,5 @@ Route::group(['prefix'=>'request'],function(){
 
     //我的申请
     Route::get('myRequest','RequestController@showSearchForm')->name('myRequest');
-    Route::post('searchRequest','RequestController@searchRequest')->name('searchRequest');
+    Route::get('searchRequest','RequestController@searchRequest')->name('searchRequest');
 });
