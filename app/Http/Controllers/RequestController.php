@@ -68,10 +68,34 @@ class RequestController extends Controller
             'end'=>'required|date'
         ]);
         //获取当前登录用户所有的申请信息
-        $uesrInfo = UserInfo::where('user_id','=',Auth::id())->first();
-        $leaves = DB::table('leaves')->where('user_code','=',$uesrInfo->user_code)->get()->toArray();
+        $userInfo = UserInfo::where('user_id','=',Auth::id())->first();
+//        $leaves = DB::table('leaves')->where('user_code','=',$uesrInfo->user_code)->get()->toArray();
+        //根据条件进行筛选，需要关联其他的表格模型
+        $status = "";
+        switch($form->status){
+            case '等待中':
+                $status = "AND B.route_id IN (1,2)";
+                break;
+            case '已通过':
+                $status = "AND B.route_id IN (3,5)";
+                break;
+            case '被拒绝':
+                $status = "AND B.route_id IN (4,6)";
+                break;
+            default:
+                break;
+        }
+        $param = array(
+            'user_code'=>$userInfo->user_code,
+            'request_type'=>$form->type,
+            'start'=>$form->start,
+            'end'=>$form->end
+//            'status'=>$status
+        );
 
-        //TODO:根据条件进行筛选，需要关联其他的表格模型
+        $sqlstr = 'SELECT A.requestNo, A.user_code,A.type,A.created_at,C.requestType,B.route_id,C.action,C.description FROM leaves AS A JOIN history AS B on A.requestNo = B.requestNo JOIN routes AS C ON B.route_id = C.id WHERE A.user_code = :user_code AND C.requestType = :request_type AND (A.created_at BETWEEN :start AND :end) '.$status;
+
+        $leaves = DB::select($sqlstr,$param);
 //        return view('request.getRequests',$leaves);
         $response = array(
             'code'=> 0,

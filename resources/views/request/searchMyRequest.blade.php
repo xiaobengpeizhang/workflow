@@ -22,6 +22,7 @@
                                 <div class="layui-input-inline">
                                     <select id="type" name="type" lay-verify="required">
                                         <option value="请假">请假</option>
+                                        <option value="加班">加班</option>
                                     </select>
                                 </div>
 
@@ -151,35 +152,31 @@
     });
 
     function getSearchResult(form,table){
-
         table.render({
             url:'{{ route('searchRequest') }}',
             where:form,
             elem:'#table',
+            id:'requestNo',
             height:315,
             cols:[[
                 {checkbox:true},
-                {field:'requestNo',title:'申请编号',width:150},
-                {field:'type',title:'申请类型',width:100},
-                {field:'created_at',title:'申请提交时间',width:200},
+                {field:'requestNo',title:'申请编号',width:150,sort:true},
+                {field:'requestType',title:'申请类型',width:100,sort:true},
+                {field:'type',title:'具体类型',width:100,sort:true},
+                {field:'description',title:'当前进度',width:230,sort:true},
+                {field:'created_at',title:'申请提交时间',width:200,sort:true},
+                {title:'操作',templet:'<div><a class="layui-btn layui-btn-mini" lay-event="detail" onclick="popup()">查看详情</a></div>',width:115}
 
             ]]
         })
 
-        {{--var url = '{{ route('searchRequest') }}';--}}
-        {{--$.get(url,form,function(data,status){--}}
-            {{--if(status == 'success'){--}}
-                {{--console.log(data);--}}
-                {{--table.render({--}}
-                    {{--elem:'#table',--}}
-                    {{--height:315,--}}
-                    {{--cols:[[--}}
-                        {{--{checkbox:true},--}}
-                        {{--{field:'requestNo',title:'申请编号',width:80}--}}
-                    {{--]]--}}
-                {{--})--}}
-            {{--}--}}
-        {{--})--}}
+
+    }
+
+    function popup(){
+//        var checkStatus = table.checkStatus('requestNo');
+//        $(this).parent().css('backgroundcolor','red');
+        console.log($(this).html());
     }
 
 </script>
