@@ -81,7 +81,7 @@
 <div class="layui-container">
     <div class="layui-row">
         <div class="layui-col-md10">
-            <table id="table"></table>
+            <table id="table" lay-filter="table"></table>
 
         </div>
     </div>
@@ -145,10 +145,18 @@
             }
             getSearchResult(data.field,table);
             $('#table').show();
-            return false;
+            return false;  //阻止页面跳转
         });
         form.render();
         element.init();
+
+        table.on('tool(table)',function(obj){
+            var url = '{{ route('getLeaveDetail') }}'+'/'+obj.data.requestNo;
+            $.get(url,function(data,status){
+
+            })
+        });
+
     });
 
     function getSearchResult(form,table){
@@ -158,6 +166,7 @@
             elem:'#table',
             id:'requestNo',
             height:315,
+            page:true,
             cols:[[
                 {checkbox:true},
                 {field:'requestNo',title:'申请编号',width:150,sort:true},
@@ -165,18 +174,14 @@
                 {field:'type',title:'具体类型',width:100,sort:true},
                 {field:'description',title:'当前进度',width:230,sort:true},
                 {field:'created_at',title:'申请提交时间',width:200,sort:true},
-                {title:'操作',templet:'<div><a class="layui-btn layui-btn-mini" lay-event="detail" onclick="popup()">查看详情</a></div>',width:115}
-
+                {title:'操作',toolbar:'#tool',width:115}
             ]]
         })
-
-
-    }
-
-    function popup(){
-//        var checkStatus = table.checkStatus('requestNo');
-//        $(this).parent().css('backgroundcolor','red');
-        console.log($(this).html());
     }
 
 </script>
+
+<script type="text/html" id="tool">
+    <a class="layui-table-link" lay-event="detail">查看详情</a>
+</script>
+

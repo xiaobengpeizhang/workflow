@@ -47,3 +47,22 @@ function isDateValid(start,end){
         return false;
     }
 }
+
+//通过AJAX请求加载页面
+function pageLoad(url){
+    $.get(url,function(data,status){
+        if(status == 'success'){
+            $('#content').html(data);
+        }
+    });
+}
+
+//弹窗
+//function popUp(title,data){
+//    $('#popUp').html(data);
+//    layer.open({
+//        title:title,
+//        content:$('#popUp'),
+//        shade: 0
+//    })
+//}

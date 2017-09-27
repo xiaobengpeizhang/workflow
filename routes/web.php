@@ -21,7 +21,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 //主系统页面
-Route::get('admin/{result?}','HomeController@admin')->name('admin');
+Route::get('admin','HomeController@admin')->name('admin');
 
 Route::group(['prefix' => 'user'],function(){
     //注册用户信息
@@ -45,4 +45,7 @@ Route::group(['prefix'=>'request'],function(){
     //我的申请
     Route::get('myRequest','RequestController@showSearchForm')->name('myRequest');
     Route::get('searchRequest','RequestController@searchRequest')->name('searchRequest');
+
+    //查看指定申请的详情
+    Route::get('leaveDetail/{requestNo}','RequestController@getLeaveDetail')->name('getLeaveDetail');
 });

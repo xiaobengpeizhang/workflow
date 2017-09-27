@@ -101,15 +101,7 @@
         var element = layui.element;
         var layer = layui.layer;
 
-        var result = '{{ $result }}';
-        switch(result){
-            case 'createLeaveSuccessed':
-               message('新的请假申请已经成功提交！');
-                break;
-            default:
-                layer.msg('Welcome');
-                break;
-        }
+        layer.msg('Welcome');
 
         element.on('nav(leftbar)', function (elem) {
             console.log(elem.text());
@@ -135,24 +127,10 @@
 
     });
 
-    function pageLoad(url){
-        $.get(url,function(data,status){
-            if(status == 'success'){
-                $('#content').html(data);
-            }
-        });
-    }
-
-    function message(content){
-        layer.msg(content,{
-            icon:1,
-            time:3000,
-            offset: 't'
-        });
-    }
 
 </script>
 
+<div id="popUp"></div>
 
 </body>
 </html>

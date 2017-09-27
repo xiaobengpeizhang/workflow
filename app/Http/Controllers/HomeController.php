@@ -34,12 +34,12 @@ class HomeController extends Controller
     }
 
     //正式进入系统控制台页面
-    public function admin($result = null){
+    public function admin(){
         $user_id = Auth::id();
         $userInfo = UserInfo::where('user_id','=',$user_id)->get();
         if($userInfo->isEmpty()){
             return redirect()->route('home');
         }
-        return view('index')->with('result',$result);
+        return view('index');
     }
 }

@@ -48,7 +48,7 @@ class RequestController extends Controller
         $history->message = $form->message;
         $history->save();
 
-        return redirect()->route('admin',['result' => 'createLeaveSuccessed']);
+        return "createLeaveSuccessed";
     }
 
     //搜索所有请假申请
@@ -70,7 +70,6 @@ class RequestController extends Controller
         //获取当前登录用户所有的申请信息
         $userInfo = UserInfo::where('user_id','=',Auth::id())->first();
 //        $leaves = DB::table('leaves')->where('user_code','=',$uesrInfo->user_code)->get()->toArray();
-        //根据条件进行筛选，需要关联其他的表格模型
         $status = "";
         switch($form->status){
             case '等待中':
@@ -88,15 +87,15 @@ class RequestController extends Controller
         $param = array(
             'user_code'=>$userInfo->user_code,
             'request_type'=>$form->type,
-            'start'=>$form->start,
-            'end'=>$form->end
+            'start'=>$form->start." ".date("H:i:s"),
+            'end'=>$form->end." ".date("H:i:s"),
 //            'status'=>$status
         );
 
         $sqlstr = 'SELECT A.requestNo, A.user_code,A.type,A.created_at,C.requestType,B.route_id,C.action,C.description FROM leaves AS A JOIN history AS B on A.requestNo = B.requestNo JOIN routes AS C ON B.route_id = C.id WHERE A.user_code = :user_code AND C.requestType = :request_type AND (A.created_at BETWEEN :start AND :end) '.$status;
-
         $leaves = DB::select($sqlstr,$param);
 //        return view('request.getRequests',$leaves);
+
         $response = array(
             'code'=> 0,
             'msg'=>'success',
@@ -105,4 +104,10 @@ class RequestController extends Controller
         );
         return $response;
     }
+
+    //查看详情
+    public function getLeaveDetail($requestNo){
+
+    }
+
 }
