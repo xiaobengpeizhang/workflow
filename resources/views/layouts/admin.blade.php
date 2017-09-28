@@ -115,6 +115,8 @@
                     pageLoad(url);
                     break;
                 case '我要加班':
+                    var url = '{{ route('askForOvertime') }}';
+                    pageLoad(url);
                     break;
                 case '待处理':
                     break;
@@ -130,7 +132,6 @@
 
 </script>
 
-<div id="popUp"></div>
 
 </body>
 </html>

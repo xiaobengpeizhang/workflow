@@ -1,12 +1,12 @@
 <span class="layui-breadcrumb">
   <a href="">首页</a>
   <a href="">我的申请</a>
-  <a><cite>我要请假</cite></a>
+  <a><cite>我要加班</cite></a>
 </span>
 
 <div class="site-title">
     <fieldset>
-        <legend><a name="fieldset">新建请假申请</a></legend>
+        <legend><a name="fieldset">新建加班申请</a></legend>
     </fieldset>
 </div>
 
@@ -15,26 +15,22 @@
         <form class="layui-form">
             {{ csrf_field() }}
             <div class="layui-form-item">
-                <label class="layui-form-label">请假类型：</label>
+                <label class="layui-form-label">加班类型：</label>
                 <div class="layui-input-inline">
                     <select name="type" lay-verify="required">
-                        <option value="调休">调休</option>
-                        <option value="事假">事假</option>
-                        <option value="病假">病假</option>
-                        <option value="婚假">婚假</option>
-                        <option value="产假">产假</option>
-                        <option value="丧假">丧假</option>
+                        <option value="平日">平日</option>
+                        <option value="周末">周末</option>
                     </select>
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label">请假理由：</label>
+                <label class="layui-form-label">加班理由：</label>
                 <div class="layui-input-block">
                     <input type="text" name="reason" lay-verify="required" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label">请假时间：</label>
+                <label class="layui-form-label">加班时间：</label>
                 <div class="layui-input-inline">
                     <input type="text" id="start" name="start" lay-verify="required" class="layui-input">
                 </div>
@@ -94,22 +90,23 @@
                 return false;
             }
 //            console.log(data.field);
-            createNewLeave(data.field);
+            createNewOvertime(data.field);
             $('#reset').click();
             return false;
         });
     });
 
-    function createNewLeave(form) {
-        var url = '{{ route('createLeave') }}';
+    function createNewOvertime(form) {
+        var url = '{{ route('createOvertime') }}';
         $.post(url, form, function (data, status) {
-            if (status == 'success' && data == "createLeaveSuccessed") {
-                message('新的请假申请已经成功提交');
+            if (status == 'success' && data == "createOvertimeSuccessed") {
+                message('新的加班申请提交成功！');
             } else {
                 return false;
             }
         })
     }
+
 
 </script>
 

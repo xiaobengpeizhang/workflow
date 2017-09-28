@@ -66,3 +66,12 @@ function pageLoad(url){
 //        shade: 0
 //    })
 //}
+
+//新增数据成功后的消息提示
+function message(content) {
+    layer.msg(content, {
+        icon: 1,
+        time: 3000,
+        offset: 't'
+    });
+}

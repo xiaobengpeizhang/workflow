@@ -40,10 +40,14 @@ Route::group(['prefix'=>'api'],function(){
 Route::group(['prefix'=>'request'],function(){
     //申请请假
     Route::get('askForLeave','RequestController@showLeaveForm')->name('askForLeave');
-    Route::post('createLeveRequest','RequestController@createLeave')->name('createLeave');
+    Route::post('createLeaveRequest','RequestController@createLeave')->name('createLeave');
+    //加班申请
+    Route::get('askForOvertime','RequestController@showOvertimeForm')->name('askForOvertime');
+    Route::post('createOvertimeRequest','RequestController@createOvertime')->name('createOvertime');
 
     //我的申请
     Route::get('myRequest','RequestController@showSearchForm')->name('myRequest');
+    //查询申请列表
     Route::get('searchRequest','RequestController@searchRequest')->name('searchRequest');
 
     //查看指定申请的详情
