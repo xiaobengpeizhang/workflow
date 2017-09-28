@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DebugBar\DebugBar;
 use Illuminate\Http\Request;
 use App\Leave;
 use App\UserInfo;
@@ -106,7 +107,14 @@ class RequestController extends Controller
     }
 
     //查看详情
-    public function getLeaveDetail($requestNo){
+    public function getLeaveDetail($requestNo = null){
+        if($requestNo != null){
+            //取回单条数据务必用first()或者find(),get()默认取回一个集合
+            $leave = Leave::where('requestNo','=',$requestNo)->firstOrFail();
+//            return compact($leave);
+            return view('request.getDetail',compact('leave'));
+//            return $leave->getHistory;
+        }
 
     }
 

@@ -92,7 +92,7 @@
         © workflow.com - created by xiaobeng
     </div>
 </div>
-<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+<script src="{{ asset('js/jquery.js') }}"></script>
 <script src="{{ asset('layui/layui.js') }}"></script>
 <script src="{{ asset('js/all.js') }}"></script>
 <script>

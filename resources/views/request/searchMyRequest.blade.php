@@ -152,8 +152,15 @@
 
         table.on('tool(table)',function(obj){
             var url = '{{ route('getLeaveDetail') }}'+'/'+obj.data.requestNo;
-            $.get(url,function(data,status){
 
+            $.get(url,function(data,status){
+                if(status == 'success'){
+                    layer.open({
+                        title:'详细信息',
+                        content:data,
+                        area:['500px','500px']
+                    });
+                }
             })
         });
 

@@ -47,5 +47,5 @@ Route::group(['prefix'=>'request'],function(){
     Route::get('searchRequest','RequestController@searchRequest')->name('searchRequest');
 
     //查看指定申请的详情
-    Route::get('leaveDetail/{requestNo}','RequestController@getLeaveDetail')->name('getLeaveDetail');
+    Route::get('leaveDetail/{requestNo?}','RequestController@getLeaveDetail')->name('getLeaveDetail');
 });
