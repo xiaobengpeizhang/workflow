@@ -53,3 +53,15 @@ Route::group(['prefix'=>'request'],function(){
     //查看指定申请的详情
     Route::get('leaveDetail/{requestNo?}','RequestController@getLeaveDetail')->name('getLeaveDetail');
 });
+
+//我的审批
+Route::group(['prefix'=>'approve'],function(){
+   //等待审批列表
+    Route::get('waitingForApprove','ApproveController@showApproveList')->name('waitingApprove');
+    //根据条件查找审批列表
+    Route::get('getApproveList','ApproveController@getApproveList')->name('getApproveList');
+
+    //组长审批
+    Route::post('agree','ApproveController@agrree')->name('agree');
+    Route::post('disagree','ApproveController@disagree')->name('disagree');
+});

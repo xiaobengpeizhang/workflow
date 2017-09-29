@@ -18,4 +18,13 @@ class Leave extends Model
 //        return $this->hasMany('App\Comment', 'foreign_key', 'local_key');
         return $this->hasMany('App\History' ,'requestNo','requestNo');
     }
+
+//    public function getCurrentHistory(){
+//        return $this->getHistory->latest()->first();
+//    }
+
+    //获取当前进度
+    public function route(){
+        return $this->hasOne('App\Route','route_id','id');
+    }
 }

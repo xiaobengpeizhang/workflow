@@ -140,11 +140,11 @@
             var depart_id = $(this).val();
 //            console.log(depart_id);
             if(depart_id != '00'){
-                $('#group').empty();
+                $('#group').empty().append('<option value="0">---</option>');
                 GroupInit(depart_id);
                 Enable($('#group'));
             }else {
-                $('#group').empty().append('<option value="00">---</option>');
+                $('#group').empty().append('<option value="0">---</option>');
                 Disable($('#group'));
             }
         });

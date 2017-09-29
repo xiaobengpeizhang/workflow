@@ -119,6 +119,8 @@
                     pageLoad(url);
                     break;
                 case '待处理':
+                    var url = '{{ route('waitingApprove') }}';
+                    pageLoad(url);
                     break;
                 case '已处理':
                     break;
