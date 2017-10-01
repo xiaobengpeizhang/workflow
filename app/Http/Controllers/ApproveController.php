@@ -92,7 +92,7 @@ class ApproveController extends Controller
             case 'OT':
                 if($userInfo->postion == '组长'){
                     DB::table('overtimes')->where('requestNo', '=', $request->requestNo)->update(['route_id' => 8]);
-                }else if($userInfo->position == '部长'){
+                }elseif($userInfo->position == '部长'){
                     DB::table('overtimes')->where('requestNo', '=', $request->requestNo)->update(['route_id' => 10]);
                 }
                 $application = DB::table('overtimes')->where('requestNo', '=', $request->requestNo)->first();
@@ -114,4 +114,42 @@ class ApproveController extends Controller
 
     }
 
+    public function disagree(Request $request){
+        $this->validate($request, [
+            'requestNo' => 'required',
+            'message' => 'nullable|max:225'
+        ]);
+        $userInfo = User::find(Auth::id())->userInfo;
+
+        switch(substr($request->requestNo,0,2)){
+            case 'LV':
+                if($userInfo->position == '组长'){
+                    DB::table('leaves')->where('requestNo','=',$request->requestNo)->update(['route_id'=>4]);
+                }elseif($userInfo->position == '部长'){
+                    DB::table('leaves')->where('requestNo','=',$request->requestNo)->update(['route_id'=>6]);
+                }
+                $application = Leave::where('requestNo', '=', $request->requestNo)->first();
+                break;
+            case 'OV':
+                if($userInfo->position == '组长'){
+                    DB::table('overtimes')->where('requestNo','=',$request->requestNo)->update(['route_id'=>9]);
+                }elseif($userInfo->position == '部长'){
+                    DB::table('overtimes')->where('requestNo','=',$request->requestNo)->update(['route_id'=>11]);
+                }
+                $application = Overtime::where('requestNo','=',$request->requestNo)->first();
+                break;
+            default:
+                break;
+        }
+
+        //新增一条历史
+        $history = new History;
+        $history->requestNo = $request->requestNo;
+        $history->route_id = $application->route_id;
+        $history->userCode = $userInfo->user_code;
+        $history->message = $request->message;
+        $history->save();
+
+        return 'updateSuccess';
+    }
 }
