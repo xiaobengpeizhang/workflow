@@ -76,7 +76,7 @@ class ApproveController extends Controller
 
         switch (substr($request->requestNo, 0, 2)) {
             case 'LV':
-                $oldApplication = DB::table('leaves')->where('requestNo', '=', $request->requestNo)->first();
+                $oldApplication = Leave::findOrFail($request->requestNo);
                 $date = floor((strtotime($oldApplication->endTime) - strtotime($oldApplication->startTime)) / 86400);
                 if($userInfo->position == '组长'){
                     if ($date >= 2 ) {
@@ -88,7 +88,7 @@ class ApproveController extends Controller
                     DB::table('leaves')->where('requestNo', '=', $request->requestNo)->update(['route_id' => 3]);
                 }
 
-                $application = Leave::where('requestNo', '=', $request->requestNo)->first();
+                $application = Leave::findOrFail($request->requestNo);
                 break;
             case 'OT':
                 if($userInfo->position == '组长'){
@@ -111,7 +111,7 @@ class ApproveController extends Controller
         $history->save();
 
         //触发广播事件
-        event(new RequestWasApproved($history));
+        broadcast(new RequestWasApproved($application,$history))->toOthers();
         return 'updateSuccess';
 
     }
@@ -153,7 +153,7 @@ class ApproveController extends Controller
         $history->save();
 
         //触发广播事件
-        event(new RequestWasApproved($history));
+        broadcast(new RequestWasApproved($application,$history))->toOthers();
         return 'updateSuccess';
     }
 }

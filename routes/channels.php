@@ -1,5 +1,7 @@
 <?php
 
+use App\Leave;
+use App\Overtime;
 /*
 |--------------------------------------------------------------------------
 | Broadcast Channels
@@ -11,6 +13,19 @@
 |
 */
 
-Broadcast::channel('App.User.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
-});
+//Broadcast::channel('App.User.{id}', function ($user, $id) {
+//    return (int) $user->id === (int) $id;
+//});
+
+//Broadcast::channel('request.{requestNo}', function ($user, $requestNo) {
+//    switch(substr($requestNo,0,2)){
+//        case 'LV':
+//            return $user->userInfo->user_code === Leave::where('requestNo','=',$requestNo)->user_code;
+//            break;
+//        case 'OT':
+//            return $user->userInfo->user_code === Overtime::where('requestNo','=',$requestNo)->user_code;
+//            break;
+//        default:
+//            break;
+//    }
+//});

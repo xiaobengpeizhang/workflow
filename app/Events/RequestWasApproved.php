@@ -15,14 +15,16 @@ class RequestWasApproved implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public $application;
     public $history;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(History $history)
+    public function __construct($application,History $history)
     {
+        $this->application = $application;
         $this->history = $history;
     }
 
@@ -33,11 +35,7 @@ class RequestWasApproved implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return [
-            'request'
-        ];
-        //TODO:实现私有广播
-//        return new PrivateChannel('reuqest.'.$this->history->requestNo);
+        return ['reuqest'];
     }
 
     public function broadcastAs()
@@ -48,7 +46,7 @@ class RequestWasApproved implements ShouldBroadcast
     public function broadcastWith()
     {
         return [
-            'user_code' => $this->history->user->user_code,
+            'user_code' => $this->application->user_code,  //申请人user_code
             'user_name' => $this->history->user->realName,
             'requestNo' => $this->history->requestNo,
             'action' => $this->history->route->action,

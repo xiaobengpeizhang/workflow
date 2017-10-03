@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Overtime extends Model
 {
     protected $table = 'overtimes';
+    protected $primaryKey = 'requestNo';
+    public $incrementing = false;
 
     protected $fillable = [
         'requestNo', 'user_code', 'type','reason','startTime','endTime'

@@ -8,6 +8,8 @@ use App\History;
 class Leave extends Model
 {
     protected $table = 'leaves';
+    protected $primaryKey = 'requestNo';
+    public $incrementing = false;
 
     protected $fillable = [
         'requestNo', 'user_code', 'type','reason','startTime','endTime'

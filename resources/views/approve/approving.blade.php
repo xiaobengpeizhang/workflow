@@ -89,6 +89,7 @@
 
 <script>
     function approveByteamleader(url,value,requestNo){
+        //ajax提交数据
         $.post(url,{
             message:value,
             requestNo:requestNo
@@ -97,7 +98,8 @@
                 layer.closeAll();
                 message('审批意见提交成功，数据已更新！');
             }
-        })
+        });
     }
+
 
 </script>

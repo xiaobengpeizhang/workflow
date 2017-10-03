@@ -94,10 +94,11 @@
 </div>
 <script src="{{ asset('js/jquery.js') }}"></script>
 <script src="{{ asset('layui/layui.js') }}"></script>
-<script src="{{ asset('js/all.js') }}"></script>
+<script src="{{ asset('js/function.js') }}"></script>
+<script src="{{ asset('js/pusher.min.js') }}"></script>
 <script>
     //JavaScript代码区域
-    layui.use(['element', 'layer',], function () {
+    layui.use(['element', 'layer'], function () {
         var element = layui.element;
         var layer = layui.layer;
 
@@ -127,9 +128,27 @@
                 default:
                     break;
             }
-        })
+        });
+
+//        Pusher.logToConsole = true;
+
+        var pusher = new Pusher('a1e834b8e027b64329ab', {
+            cluster: 'ap1',
+            encrypted: true
+        });
+
+        //监听审核事件
+        var channel = pusher.subscribe('reuqest');
+        channel.bind('reuqest.approved', function(data) {
+            var user_code = '{{ \App\User::find(Auth::id())->userInfo->user_code }}';
+            if(data.user_code.toString() == user_code){
+                var text = data.user_name+'刚刚'+data.action+'了您编号为'+data.requestNo+'的申请。';
+                message(text);
+            }
+        });
 
     });
+
 
 
 </script>
