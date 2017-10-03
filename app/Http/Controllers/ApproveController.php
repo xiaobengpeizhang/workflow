@@ -10,6 +10,7 @@ use DebugBar\DebugBar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Events\RequestWasApproved;
 
 class ApproveController extends Controller
 {
@@ -77,7 +78,7 @@ class ApproveController extends Controller
             case 'LV':
                 $oldApplication = DB::table('leaves')->where('requestNo', '=', $request->requestNo)->first();
                 $date = floor((strtotime($oldApplication->endTime) - strtotime($oldApplication->startTime)) / 86400);
-                if($userInfo->positon == '组长'){
+                if($userInfo->position == '组长'){
                     if ($date >= 2 ) {
                         DB::table('leaves')->where('requestNo', '=', $request->requestNo)->update(['route_id' => 2]);
                     } else {
@@ -90,7 +91,7 @@ class ApproveController extends Controller
                 $application = Leave::where('requestNo', '=', $request->requestNo)->first();
                 break;
             case 'OT':
-                if($userInfo->postion == '组长'){
+                if($userInfo->position == '组长'){
                     DB::table('overtimes')->where('requestNo', '=', $request->requestNo)->update(['route_id' => 8]);
                 }elseif($userInfo->position == '部长'){
                     DB::table('overtimes')->where('requestNo', '=', $request->requestNo)->update(['route_id' => 10]);
@@ -101,15 +102,16 @@ class ApproveController extends Controller
                 break;
         }
 
-
         //新增一条历史
         $history = new History;
         $history->requestNo = $request->requestNo;
         $history->route_id = $application->route_id;
-        $history->userCode = User::find(Auth::id())->userInfo->user_code;
+        $history->userCode = $userInfo->user_code;
         $history->message = $request->message;
         $history->save();
 
+        //触发广播事件
+        event(new RequestWasApproved($history));
         return 'updateSuccess';
 
     }
@@ -150,6 +152,8 @@ class ApproveController extends Controller
         $history->message = $request->message;
         $history->save();
 
+        //触发广播事件
+        event(new RequestWasApproved($history));
         return 'updateSuccess';
     }
 }
